@@ -91,7 +91,7 @@ open class CameraController: NSObject, LensRepositoryGroupObserver, LensPrefetch
     public private(set) var photoCaptureOutput: PhotoCaptureOutput?
 
     /// An output used for recording videos.
-    public private(set) var recorder: Recorder?
+    public var recorder: Recorder?
 
     // MARK: Data providers
 
@@ -424,8 +424,27 @@ open class CameraController: NSObject, LensRepositoryGroupObserver, LensPrefetch
             }
         }
     }
-
-    // MARK: Recording
+    
+    // MARK: Recorder 
+    
+    /// Configures the recorder to be ready to record a new video.
+    open func configureRecorder() {
+        if let old = recorder {
+            cameraKit.remove(output: old.output)
+        }
+        recorder = try? Recorder(
+            url: URL(fileURLWithPath: "\(NSTemporaryDirectory())\(UUID().uuidString).mp4"),
+            orientation: cameraKit.activeInput.frameOrientation,
+            size: OutputSizeHelper.normalizedSize(
+                for: cameraKit.activeInput.frameSize,
+                aspectRatio: UIScreen.main.bounds.width / UIScreen.main.bounds.height,
+                orientation: cameraKit.activeInput.frameOrientation
+            )
+        )
+        if let recorder {
+            cameraKit.add(output: recorder.output)
+        }
+    }
 
     /// Begin recording video.
     open func startRecording() {
@@ -712,29 +731,6 @@ private extension CameraController {
                 print("[CameraKit] Failed to lock device for configuration when trying to adjust zoom level")
                 return
             }
-        }
-    }
-}
-
-// MARK: Recording
-
-private extension CameraController {
-    /// Configures the recorder to be ready to record a new video.
-    func configureRecorder() {
-        if let old = recorder {
-            cameraKit.remove(output: old.output)
-        }
-        recorder = try? Recorder(
-            url: URL(fileURLWithPath: "\(NSTemporaryDirectory())\(UUID().uuidString).mp4"),
-            orientation: cameraKit.activeInput.frameOrientation,
-            size: OutputSizeHelper.normalizedSize(
-                for: cameraKit.activeInput.frameSize,
-                aspectRatio: UIScreen.main.bounds.width / UIScreen.main.bounds.height,
-                orientation: cameraKit.activeInput.frameOrientation
-            )
-        )
-        if let recorder {
-            cameraKit.add(output: recorder.output)
         }
     }
 }

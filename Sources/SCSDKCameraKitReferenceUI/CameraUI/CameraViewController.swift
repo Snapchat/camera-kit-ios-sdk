@@ -550,7 +550,6 @@ extension CameraViewController: CameraButtonDelegate {
         print("Camera button tapped")
         cameraController.takePhoto { image, error in
             guard let image else { return }
-            self.cameraController.clearLens(willReapply: true)
             DispatchQueue.main.async {
                 self.cameraController.restoreBrightnessIfNecessary()
                 let viewController = ImagePreviewViewController(image: image)
@@ -560,7 +559,9 @@ extension CameraViewController: CameraButtonDelegate {
                     self?.cameraController.reapplyCurrentLens()
                     self?.cameraController.increaseBrightnessIfNecessary()
                 }
-                self.present(viewController, animated: true, completion: nil)
+                self.present(viewController, animated: true) { [weak self] in
+                    self?.cameraController.clearLens(willReapply: true)
+                }
             }
         }
     }

@@ -11,11 +11,15 @@ public class Recorder {
 
     /// The AVWriterOutput for CameraKt.
     public let output: AVWriterOutput
+    /// Flip captured video horizontally.
+    /// - Attention: If your camera pipeline uses AVFoundation, you do not need to set this property.
+    /// - Note: By default this is FALSE. When set to FALSE, the capture will be mirrored on the front and not mirrored on the back camera.
+    /// - Note: If set to TRUE, the capture will be mirrored on top of any mirroring done by AVFoundation: Capture is mirrored if either horizontallyMirrored is TRUE or device set to front camera is TRUE. If both are TRUE the two mirroring operations will cancel out.
+    public var horizontallyMirror: Bool = false
 
     private let writer: AVAssetWriter
     private let videoInput: AVAssetWriterInput
     private let pixelBufferInput: AVAssetWriterInputPixelBufferAdaptor
-
     private let audioInput: AVAssetWriterInput = {
         let compressionAudioSettings: [String: Any] =
             [
@@ -35,6 +39,9 @@ public class Recorder {
     ///   - url: output URL of video file
     ///   - orientation: current orientation of device
     ///   - size: height of video output
+    ///   - mirrored:flip video capture horizontally.  If false, Recorder will automatically mirror capture
+    ///   based on AVFoundation camera configuration. If true, Recorder will flip the capture. Set this parameter
+    ///   to true when manually mirroring the input with LensProcessor.setInputHorizontallyMirrored.
     /// - Throws: Throws error if cannot create asset writer with output file URL and file type
     public init(url: URL, orientation: AVCaptureVideoOrientation, size: CGSize) throws {
         self.outputURL = url
@@ -48,8 +55,8 @@ public class Recorder {
                 AVVideoScalingModeKey: AVVideoScalingModeResizeAspectFill,
             ]
         )
-        videoInput.expectsMediaDataInRealTime = true
-        videoInput.transform = Recorder.affineTransform(orientation: orientation, mirrored: false)
+
+        videoInput.transform = Recorder.affineTransform(orientation: orientation, mirrored: self.horizontallyMirror)
 
         self.pixelBufferInput = AVAssetWriterInputPixelBufferAdaptor(
             assetWriterInput: videoInput,
@@ -78,7 +85,7 @@ public class Recorder {
         }
     }
 
-    private static func affineTransform(orientation: AVCaptureVideoOrientation, mirrored: Bool)
+    public static func affineTransform(orientation: AVCaptureVideoOrientation, mirrored: Bool)
         -> CGAffineTransform
     {
         var transform: CGAffineTransform = .identity

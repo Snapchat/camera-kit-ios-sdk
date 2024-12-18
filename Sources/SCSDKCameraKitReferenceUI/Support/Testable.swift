@@ -97,4 +97,5 @@ public enum OtherElements: String, TestableElement {
     case tapToFocusView
     case pairingButton
     case connectedLensStartButton
+    case mirrorButton
 }
