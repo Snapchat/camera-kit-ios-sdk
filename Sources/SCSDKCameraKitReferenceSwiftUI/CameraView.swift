@@ -9,18 +9,22 @@ import SwiftUI
 public struct CameraView: View {
     /// Relevant state for the view
     @StateObject private var state = CameraViewState()
-
+    
     /// A controller which manages the camera and lenses stack on behalf of the view
     private var cameraController: CameraController
-
-    public init(cameraController: CameraController) {
+    var videoCallback: (String) -> Void
+    var imageCallback: (UIImage) -> Void
+    
+    public init(cameraController: CameraController, videoCallback: @escaping (String) -> Void, imageCallback: @escaping (UIImage) -> Void) {
         self.cameraController = cameraController
+        self.videoCallback = videoCallback
+        self.imageCallback = imageCallback
         cameraController.configure(
             orientation: .portrait, textInputContextProvider: nil, agreementsPresentationContextProvider: nil,
             completion: nil
         )
     }
-
+    
     public var body: some View {
         ZStack {
             PreviewView(cameraKit: cameraController.cameraKit)
@@ -42,23 +46,13 @@ public struct CameraView: View {
                 )
                 Spacer()
                 MediaPickerView(provider: cameraController.lensMediaProvider)
-                LensFooter(state: state, cameraController: cameraController)
+                LensFooter(state: state, cameraController: cameraController, videoCallback: self.videoCallback, imageCallback: self.imageCallback)
             }
             HintView(hint: state.hint)
             ProgressView()
                 .opacity(state.loading ? 1 : 0)
         }.onAppear {
             state.cameraController = cameraController
-        }
-        .sheet(item: $state.captured, onDismiss: cameraController.reapplyCurrentLens) { item in
-            switch item {
-            case let .photo(image):
-                ImagePreviewView(image: image, snapchatDelegate: cameraController.snapchatDelegate)
-                    .edgesIgnoringSafeArea(.bottom)
-            case let .video(url):
-                VideoPreviewView(video: url, snapchatDelegate: cameraController.snapchatDelegate)
-                    .edgesIgnoringSafeArea(.bottom)
-            }
         }
     }
 }
@@ -68,10 +62,10 @@ public struct CameraView: View {
 struct LensHeader: View {
     /// The name of the currently selected lens.
     let lensName: String
-
+    
     /// An action to call when the camera flip button is tapped.
     let flipCameraAction: () -> Void
-
+    
     var body: some View {
         ZStack {
             Text(lensName)
@@ -93,10 +87,12 @@ struct LensHeader: View {
 struct LensFooter: View {
     /// The state of the camera view.
     @ObservedObject var state: CameraViewState
-
+    
     /// The camera controller.
     let cameraController: CameraController
-
+    let videoCallback: (String) -> Void
+    let imageCallback: (UIImage) -> Void
+    
     var body: some View {
         ZStack {
             CarouselView(availableLenses: $state.lenses, selectedLens: $state.selectedLens)
@@ -106,6 +102,7 @@ struct LensFooter: View {
                     cameraController.finishRecording { url, _ in
                         guard let url else { return }
                         state.captured = .video(url: url)
+                        videoCallback(url.absoluteString)
                         cameraController.clearLens(willReapply: true)
                     }
                 },
@@ -113,6 +110,7 @@ struct LensFooter: View {
                     cameraController.takePhoto { image, _ in
                         guard let image else { return }
                         state.captured = .photo(image: image)
+                        imageCallback(image)
                         cameraController.clearLens(willReapply: true)
                     }
                 }
@@ -136,13 +134,13 @@ struct LensFooter: View {
 struct MessageView: View {
     /// The name of the currently selected lens.
     let lensName: String
-
+    
     /// The ID of the currently selected lens.
     let lensID: String
-
+    
     /// Whether or not the message view is being displayed.
     let showing: Bool
-
+    
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
@@ -169,7 +167,7 @@ struct MessageView: View {
 struct HintView: View {
     /// The hint to be displayed.
     let hint: String?
-
+    
     var body: some View {
         Text(hint ?? "")
             .font(.system(size: 20))
