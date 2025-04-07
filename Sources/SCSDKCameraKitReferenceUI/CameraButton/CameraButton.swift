@@ -35,7 +35,8 @@ public class CameraButton: UIView, UIGestureRecognizerDelegate {
     public weak var delegate: CameraButtonDelegate?
 
     /// The minimum time for a hold to be considered "valid."
-    /// If the user holds and releases for a duration shorter than specified, the camera button will act as though it has been tapped instead of held.
+    /// If the user holds and releases for a duration shorter than specified, the camera button will act as though it
+    /// has been tapped instead of held.
     public var minimumHoldDuration: TimeInterval = 0.75
 
     /// Line width for camera ring
@@ -49,7 +50,8 @@ public class CameraButton: UIView, UIGestureRecognizerDelegate {
         }
     }
 
-    /// List of allowed gestures to be used when recording a video(LongPressGesture) i.e. Double Tap Gesture, Pinch Gesture.
+    /// List of allowed gestures to be used when recording a video(LongPressGesture) i.e. Double Tap Gesture, Pinch
+    /// Gesture.
     public var allowWhileRecording: [UIGestureRecognizer] = []
 
     /// Ring color while recording
@@ -153,6 +155,23 @@ public class CameraButton: UIView, UIGestureRecognizerDelegate {
 
         circleOutline.path = path.cgPath
         circleFill.path = path.cgPath
+
+        if let superview, pressGestureRecognizer.view == nil {
+            let viewHostForGestureRecognizers: UIView
+
+            if let supersuperview = superview.superview, superview.bounds == bounds {
+                // When the bounds of the superview are equal to those of the `CameraButton`, it typically means that we
+                // are using `CameraButton` in SwiftUI, and it is wrapped by `_UIConstraintBasedLayoutHostingView`,
+                // which appears to **ignore** gesture recognizers on iOS 18+. To resolve this issue, we should add
+                // gesture recognizers to the superview of the superview to ensure they work correctly.
+                viewHostForGestureRecognizers = supersuperview
+            } else {
+                viewHostForGestureRecognizers = superview
+            }
+
+            viewHostForGestureRecognizers.addGestureRecognizer(pressGestureRecognizer)
+            viewHostForGestureRecognizers.addGestureRecognizer(tapGestureRecognizer)
+        }
     }
 
     override public var intrinsicContentSize: CGSize {
@@ -164,8 +183,6 @@ public class CameraButton: UIView, UIGestureRecognizerDelegate {
     override public func willMove(toSuperview newSuperview: UIView?) {
         pressGestureRecognizer.view?.removeGestureRecognizer(pressGestureRecognizer)
         tapGestureRecognizer.view?.removeGestureRecognizer(tapGestureRecognizer)
-        newSuperview?.addGestureRecognizer(pressGestureRecognizer)
-        newSuperview?.addGestureRecognizer(tapGestureRecognizer)
         super.willMove(toSuperview: newSuperview)
     }
 
@@ -184,7 +201,7 @@ public class CameraButton: UIView, UIGestureRecognizerDelegate {
             startRecordingAnimation()
         case .ended, .cancelled, .failed:
             if
-                let holdStartTime = holdStartTime,
+                let holdStartTime,
                 abs(holdStartTime.timeIntervalSinceNow) >= minimumHoldDuration
             {
                 // User held for minimum specified threshold
@@ -350,10 +367,10 @@ extension CameraButton: CAAnimationDelegate {
 
 // MARK: Constants
 
-private extension CameraButton.Constants {
-    static let fillStrokeKey = "ring_fill_stroke_anim"
-    static let fillColorKey = "ring_fill_color_anim"
-    static let outlineIncreaseLineWidthKey = "ring_outline_increase_line_width_anim"
-    static let outlineResetLineWidthKey = "ring_outline_reset_line_width_anim"
-    static let sizeDuration = 0.25
+extension CameraButton.Constants {
+    fileprivate static let fillStrokeKey = "ring_fill_stroke_anim"
+    fileprivate static let fillColorKey = "ring_fill_color_anim"
+    fileprivate static let outlineIncreaseLineWidthKey = "ring_outline_increase_line_width_anim"
+    fileprivate static let outlineResetLineWidthKey = "ring_outline_reset_line_width_anim"
+    fileprivate static let sizeDuration = 0.25
 }

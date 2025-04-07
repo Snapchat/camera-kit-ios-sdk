@@ -46,11 +46,8 @@ public class CameraConfigurableActionView: UIView {
     /// View that provides the stack view with its blurred background.
     public let blurEffectView: UIVisualEffectView = {
         let blurEffect: UIBlurEffect
-        if #available(iOS 13.0, *) {
-            blurEffect = UIBlurEffect(style: .systemUltraThinMaterialDark)
-        } else {
-            blurEffect = UIBlurEffect(style: .dark)
-        }
+        blurEffect = UIBlurEffect(style: .systemUltraThinMaterialDark)
+
         let view = UIVisualEffectView(effect: blurEffect)
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false

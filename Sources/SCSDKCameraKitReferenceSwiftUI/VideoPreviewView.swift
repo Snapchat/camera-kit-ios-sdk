@@ -4,7 +4,6 @@ import SCSDKCameraKit
 import SCSDKCameraKitReferenceUI
 import SwiftUI
 
-@available(iOS 13.0, *)
 /// SwiftUI wrapper for the reference UI captured video preview view controller.
 public struct VideoPreviewView: UIViewControllerRepresentable {
     private let video: URL

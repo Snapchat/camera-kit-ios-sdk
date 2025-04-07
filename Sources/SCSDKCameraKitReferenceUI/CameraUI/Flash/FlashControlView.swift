@@ -48,11 +48,7 @@ public class FlashControlView: UIView {
     /// View that provides the control with its blurred background.
     private let blurEffectView: UIVisualEffectView = {
         let blurEffect: UIBlurEffect
-        if #available(iOS 13.0, *) {
-            blurEffect = UIBlurEffect(style: .systemUltraThinMaterialDark)
-        } else {
-            blurEffect = UIBlurEffect(style: .dark)
-        }
+        blurEffect = UIBlurEffect(style: .systemUltraThinMaterialDark)
 
         let view = UIVisualEffectView(effect: blurEffect)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -162,9 +158,7 @@ public class FlashControlView: UIView {
 
     private func commonInit() {
         layer.cornerRadius = 20
-        if #available(iOS 13.0, *) {
-            layer.cornerCurve = .continuous
-        }
+        layer.cornerCurve = .continuous
         layer.masksToBounds = true
         setupBlurEffectView()
         setupPrimaryLabel()

@@ -4,7 +4,6 @@ import SCSDKCameraKit
 import SCSDKCameraKitReferenceUI
 import SwiftUI
 
-@available(iOS 13.0, *)
 /// SwiftUI wrapper for the reference UI captured image preview view controller.
 public struct ImagePreviewView: UIViewControllerRepresentable {
     private let image: UIImage

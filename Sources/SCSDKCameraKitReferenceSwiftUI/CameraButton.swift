@@ -4,7 +4,6 @@ import SCSDKCameraKit
 import SCSDKCameraKitReferenceUI
 import SwiftUI
 
-@available(iOS 13.0, *)
 /// SwiftUI wrapper for the reference UI camera button.
 public struct CameraButton: UIViewRepresentable {
     /// A closure to be called when a photo is captured
@@ -49,7 +48,6 @@ public struct CameraButton: UIViewRepresentable {
     }
 }
 
-@available(iOS 13.0, *)
 public extension CameraButton {
     class Coordinator: NSObject, CameraButtonDelegate {
         let parent: CameraButton

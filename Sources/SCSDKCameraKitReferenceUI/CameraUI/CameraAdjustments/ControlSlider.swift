@@ -57,7 +57,6 @@ public class ControlSlider: UISlider {
 
     /// Sets the color of the slider's thumb.
     /// - Parameter color: The color to set for the the slider's thumb.
-    @available(iOS 13.0, *)
     public func setThumbColor(_ color: UIColor) {
         setThumbImage(thumbImage?.withTintColor(color), for: .normal)
     }

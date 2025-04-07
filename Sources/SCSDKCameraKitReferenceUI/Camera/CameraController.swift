@@ -223,9 +223,8 @@ open class CameraController: NSObject, LensRepositoryGroupObserver, LensPrefetch
         // concerning your usage of the TrueDepth camera.
         /*
          let config = ARFaceTrackingConfiguration()
-         if #available(iOS 13.0, *) {
-             config.maximumNumberOfTrackedFaces = 0
-         }
+         config.maximumNumberOfTrackedFaces = 0
+
          let arInput = ARSessionInput(session: ARSession(), frontCameraConfiguration: config)
           */
 
@@ -560,7 +559,7 @@ open class CameraController: NSObject, LensRepositoryGroupObserver, LensPrefetch
     /// - Returns: Float representing the intensity of the tone map effect.
     /// - Note: Before calling this function, check whether or not the adjustment is available for the device. See `isToneMapAdjustmentAvailable`.
     public func enableToneMapAdjustment() -> Float? {
-        toneMapController = try? cameraKit.adjustments.processor?.apply(adjustment: ToneMapAdjustment())
+        toneMapController = try? cameraKit.adjustments.processor?.apply(ToneMapAdjustment()) as? ToneMapAdjustmentController
         return Float(toneMapController?.amount ?? 0)
     }
 
@@ -578,7 +577,7 @@ open class CameraController: NSObject, LensRepositoryGroupObserver, LensPrefetch
     /// - Returns: Float representing the intensity of the portrait blur effect.
     /// - Note: Before calling this function, check whether or not the adjustment is available for the device. See `isPortraitAdjustmentAvailable`.
     public func enablePortraitAdjustment() -> Float? {
-        portraitController = try? cameraKit.adjustments.processor?.apply(adjustment: PortraitAdjustment())
+        portraitController = try? cameraKit.adjustments.processor?.apply(PortraitAdjustment()) as? PortraitAdjustmentController
 
         return Float(portraitController?.blur ?? 0)
     }

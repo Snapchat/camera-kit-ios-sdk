@@ -63,7 +63,6 @@ public struct CameraView: View {
     }
 }
 
-@available(iOS 13.0, *)
 /// A sample implementation of a header view, which shows the lens name and a camera flip button
 struct LensHeader: View {
     /// The name of the currently selected lens.
@@ -131,7 +130,6 @@ struct LensFooter: View {
     }
 }
 
-@available(iOS 13.0, *)
 /// A reference implementation of a message view, which shows the selected lens name and ID
 struct MessageView: View {
     /// The name of the currently selected lens.
@@ -164,7 +162,6 @@ struct MessageView: View {
     }
 }
 
-@available(iOS 13.0, *)
 /// A reference implementation of a hint view, which shows hints requested to be displayed by a lens
 struct HintView: View {
     /// The hint to be displayed.

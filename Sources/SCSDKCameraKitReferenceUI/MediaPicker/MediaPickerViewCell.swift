@@ -23,9 +23,7 @@ class MediaPickerViewAssetCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 5
         imageView.layer.masksToBounds = true
-        if #available(iOS 13.0, *) {
-            imageView.layer.cornerCurve = .continuous
-        }
+        imageView.layer.cornerCurve = .continuous
         durationLabel.textColor = .white
         durationLabel.font = UIFont.boldSystemFont(ofSize: 10)
         contentView.addSubview(durationLabel)
@@ -39,9 +37,7 @@ class MediaPickerViewAssetCell: UICollectionViewCell {
         selectionMask.layer.borderWidth = 3
         selectionMask.layer.borderColor = UIColor.purple.cgColor
         selectionMask.layer.cornerRadius = imageView.layer.cornerRadius
-        if #available(iOS 13.0, *) {
-            selectionMask.layer.cornerCurve = imageView.layer.cornerCurve
-        }
+        selectionMask.layer.cornerCurve = imageView.layer.cornerCurve
         selectionMask.isHidden = true
         contentView.addSubview(selectionMask)
         selectionMask.translatesAutoresizingMaskIntoConstraints = false

@@ -4,7 +4,6 @@ import SCSDKCameraKit
 import SCSDKCameraKitReferenceUI
 import SwiftUI
 
-@available(iOS 13.0, *)
 /// SwiftUI wrapper for the reference UI carousel view.
 public struct CarouselView: UIViewRepresentable {
     /// The lenses that should be visible in the carousel
@@ -36,7 +35,6 @@ public struct CarouselView: UIViewRepresentable {
     }
 }
 
-@available(iOS 13.0, *)
 public extension CarouselView {
     class Coordinator: NSObject, CarouselViewDelegate, CarouselViewDataSource {
         let parent: CarouselView

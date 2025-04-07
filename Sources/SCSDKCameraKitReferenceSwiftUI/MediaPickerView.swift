@@ -4,7 +4,6 @@ import SCSDKCameraKit
 import SCSDKCameraKitReferenceUI
 import SwiftUI
 
-@available(iOS 13.0, *)
 /// SwiftUI wrapper for the reference UI media picker.
 public struct MediaPickerView: View {
     private let provider: LensMediaPickerProvider
@@ -22,7 +21,6 @@ public struct MediaPickerView: View {
     }
 }
 
-@available(iOS 13.0, *)
 private struct _MediaPickerView: UIViewRepresentable {
     private let provider: LensMediaPickerProvider
     fileprivate let inner = SCSDKCameraKitReferenceUI.MediaPickerView()
@@ -47,7 +45,6 @@ private struct _MediaPickerView: UIViewRepresentable {
     }
 }
 
-@available(iOS 13.0, *)
 extension _MediaPickerView {
     class Coordinator: NSObject, LensMediaPickerProviderUIDelegate {
         let parent: _MediaPickerView

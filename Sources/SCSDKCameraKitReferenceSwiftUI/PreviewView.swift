@@ -3,7 +3,6 @@
 import SCSDKCameraKit
 import SwiftUI
 
-@available(iOS 13.0, *)
 /// SwiftUI wrapper for the CameraKit preview view.
 public struct PreviewView: UIViewRepresentable {
     private let inner = SCSDKCameraKit.PreviewView()

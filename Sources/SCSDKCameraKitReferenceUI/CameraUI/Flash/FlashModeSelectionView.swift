@@ -72,11 +72,7 @@ public class FlashModeSelectionView: UIView {
         control.setTitleTextAttributes(selectedAttributes, for: .selected)
         control.translatesAutoresizingMaskIntoConstraints = false
         control.selectedSegmentIndex = 0
-        if #available(iOS 13.0, *) {
-            control.layer.maskedCorners = .init()
-        } else {
-            control.layer.cornerRadius = 0
-        }
+        control.layer.maskedCorners = .init()
 
         return control
     }()
