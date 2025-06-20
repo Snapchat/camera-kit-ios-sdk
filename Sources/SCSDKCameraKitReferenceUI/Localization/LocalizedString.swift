@@ -45,9 +45,16 @@ public func CameraKitLocalizedString(
     table: String? = nil
 ) -> String {
     let resolvedBundle = bundle ?? bestBundle(forPreferredLanguages: preferredLanguages)
+    let mainBundle = bundle ?? Bundle.main
     let fallbackBundle = bestBundle(forPreferredLanguages: ["en-US"])
+    let mainBundleResolvedString = mainBundle.localizedString(forKey: key, value: nil, table: table)
     let resolvedString = resolvedBundle.localizedString(forKey: key, value: nil, table: table)
     let fallbackString = fallbackBundle.localizedString(forKey: key, value: nil, table: table)
+
+    if mainBundleResolvedString != key {
+        // The requested string has been localized in the main bundle.
+        return mainBundleResolvedString
+    }
     if resolvedString == key, fallbackString != key {
         // The localizedString call for the specified bundle returned the key (ie: it hasn't been localized) but the English bundle doesn't.
         // This indicates that the requested string has not been localized, and we should fall back to the English value instead of showing the user the key.
