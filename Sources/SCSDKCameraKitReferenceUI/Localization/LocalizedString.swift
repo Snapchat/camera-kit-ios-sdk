@@ -45,7 +45,7 @@ public func CameraKitLocalizedString(
     table: String? = nil
 ) -> String {
     let resolvedBundle = bundle ?? bestBundle(forPreferredLanguages: preferredLanguages)
-    let mainBundle = Bundle.main
+    let mainBundle = bundle ?? Bundle.main
     let fallbackBundle = bestBundle(forPreferredLanguages: ["en-US"])
     let mainBundleResolvedString = mainBundle.localizedString(forKey: key, value: nil, table: table)
     let resolvedString = resolvedBundle.localizedString(forKey: key, value: nil, table: table)
