@@ -17,7 +17,6 @@
 		0FF07EF023D79DC500CFFA3F /* CameraKitSampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF07EEF23D79DC500CFFA3F /* CameraKitSampleUITests.swift */; };
 		0FF07F0223D7BFC100CFFA3F /* lenses in Resources */ = {isa = PBXBuildFile; fileRef = 0FF07F0123D7BFC100CFFA3F /* lenses */; };
 		1B9ABADE2CAEECCB00438C85 /* SCSDKCameraKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1B9ABADD2CAEECCB00438C85 /* SCSDKCameraKit */; };
-		1B9ABAE02CAEECCB00438C85 /* SCSDKCameraKitBaseExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 1B9ABADF2CAEECCB00438C85 /* SCSDKCameraKitBaseExtension */; };
 		1B9ABAE22CAEECCB00438C85 /* SCSDKCameraKitLoginKitAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 1B9ABAE12CAEECCB00438C85 /* SCSDKCameraKitLoginKitAuth */; };
 		1B9ABAE42CAEECCB00438C85 /* SCSDKCameraKitPushToDeviceExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 1B9ABAE32CAEECCB00438C85 /* SCSDKCameraKitPushToDeviceExtension */; };
 		1B9ABAE62CAEECCB00438C85 /* SCSDKCameraKitReferenceSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1B9ABAE52CAEECCB00438C85 /* SCSDKCameraKitReferenceSwiftUI */; };
@@ -79,7 +78,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B9ABAE82CAEECCB00438C85 /* SCSDKCameraKitReferenceUI in Frameworks */,
-				1B9ABAE02CAEECCB00438C85 /* SCSDKCameraKitBaseExtension in Frameworks */,
 				1BADBBBF2CCAAD1700173B0D /* SnapSDK in Frameworks */,
 				1B9ABAE62CAEECCB00438C85 /* SCSDKCameraKitReferenceSwiftUI in Frameworks */,
 				1B9ABAE42CAEECCB00438C85 /* SCSDKCameraKitPushToDeviceExtension in Frameworks */,
@@ -207,7 +205,6 @@
 			name = CameraKitSample;
 			packageProductDependencies = (
 				1B9ABADD2CAEECCB00438C85 /* SCSDKCameraKit */,
-				1B9ABADF2CAEECCB00438C85 /* SCSDKCameraKitBaseExtension */,
 				1B9ABAE12CAEECCB00438C85 /* SCSDKCameraKitLoginKitAuth */,
 				1B9ABAE32CAEECCB00438C85 /* SCSDKCameraKitPushToDeviceExtension */,
 				1B9ABAE52CAEECCB00438C85 /* SCSDKCameraKitReferenceSwiftUI */,
@@ -825,10 +822,6 @@
 		1B9ABADD2CAEECCB00438C85 /* SCSDKCameraKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SCSDKCameraKit;
-		};
-		1B9ABADF2CAEECCB00438C85 /* SCSDKCameraKitBaseExtension */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SCSDKCameraKitBaseExtension;
 		};
 		1B9ABAE12CAEECCB00438C85 /* SCSDKCameraKitLoginKitAuth */ = {
 			isa = XCSwiftPackageProductDependency;

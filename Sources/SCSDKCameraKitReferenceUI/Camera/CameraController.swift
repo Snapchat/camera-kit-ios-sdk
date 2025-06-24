@@ -531,6 +531,23 @@ open class CameraController: NSObject, LensRepositoryGroupObserver, LensPrefetch
             }
         }
     }
+    
+    public func warmupLens(_ lens: Lens, completion: ((Bool) -> Void)? = nil) {
+        lensQueue.async { [weak self] in
+            guard let self, let processor = self.cameraKit.lenses.processor else {
+                completion?(false)
+                return
+            }
+            processor.warmup(lens: lens, launchData: self.launchData(for: lens)) { success in
+                if success {
+                    print("\(lens.name ?? "Unnamed") (\(lens.id)) warmed up")
+                } else {
+                    print("Lens failed to warmup")
+                }
+                completion?(success)
+            }
+        }
+    }
 
     /// Clear the currently selected lens, and return to unmodified camera feed.
     ///   - willReapply: if true, cameraKit will not clear out the "currentLens" property, and reapplyCurrentLens will apply the lens that was cleared.
