@@ -8,6 +8,11 @@ and the Camera Kit SDK adheres to [Semantic Versioning](https://semver.org/spec/
 <a name="unreleased"></a>
 ## [Unreleased]
 
+<a name="1.42.0"></a>
+## [1.42.0] - 2025-07-23
+### Features
+- Lens Studio 5.12 support
+
 <a name="1.41.0"></a>
 ## [1.41.0] - 2025-06-23
 ### Features
@@ -20,14 +25,13 @@ and the Camera Kit SDK adheres to [Semantic Versioning](https://semver.org/spec/
 
 ### Bug Fixes
 - Fixed potential race condition for ToS prompt
-
 <a name="1.40.0"></a>
 ## [1.40.0] - 2025-04-03
 ### Features
 - Lens Studio 5.8 support
 
 ### Updates
-- Improvement for HTTP request validation, now accepting empty optional parameters
+- **Android/iOS:** Improvement for HTTP request validation, now accepting empty optional parameters
 - Minimum supported version changed to iOS 14.0
 
 ### Bug Fixes
