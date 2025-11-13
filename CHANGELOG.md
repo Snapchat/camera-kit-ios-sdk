@@ -15,6 +15,7 @@ and the Camera Kit SDK adheres to [Semantic Versioning](https://semver.org/spec/
 
 ### Updates
 - New API to remove lens by ID
+
 <a name="1.44.0"></a>
 ## [1.44.0] - 2025-10-17
 ### Features
