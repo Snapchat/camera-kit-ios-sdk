@@ -8,6 +8,29 @@ and the Camera Kit SDK adheres to [Semantic Versioning](https://semver.org/spec/
 <a name="unreleased"></a>
 ## [Unreleased]
 
+<a name="1.45.0"></a>
+## [1.45.0] - 2025-11-13
+### Features
+- Lens Studio 5.16 support
+
+### Updates
+- New API to remove lens by ID
+
+<a name="1.44.0"></a>
+## [1.44.0] - 2025-10-17
+### Features
+- Lens Studio 5.15 support
+
+<a name="1.43.0"></a>
+## [1.43.0] - 2025-09-08
+### Features
+- Lens Studio 5.13 support
+
+<a name="1.42.0"></a>
+## [1.42.0] - 2025-07-23
+### Features
+- Lens Studio 5.12 support
+
 <a name="1.41.0"></a>
 ## [1.41.0] - 2025-06-23
 ### Features
@@ -20,7 +43,6 @@ and the Camera Kit SDK adheres to [Semantic Versioning](https://semver.org/spec/
 
 ### Bug Fixes
 - Fixed potential race condition for ToS prompt
-
 <a name="1.40.0"></a>
 ## [1.40.0] - 2025-04-03
 ### Features
