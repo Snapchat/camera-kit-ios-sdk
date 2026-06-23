@@ -245,7 +245,9 @@ open class CameraController: NSObject, LensRepositoryGroupObserver, LensPrefetch
         // Start the capture session. It's important you start the capture session after starting the CameraKit session
         // because the CameraKit input and session configures the capture session implicitly and you may run into a
         // race condition which causes some audio and video output frames to be lost, resulting in a blank preview view
-        input.startRunning()
+        Task {
+            input.startRunning()
+        }
     }
 
     /// Configures the data provider for lenses. Subclasses may override this to customize their data provider.
