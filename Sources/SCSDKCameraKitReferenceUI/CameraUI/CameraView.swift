@@ -7,8 +7,22 @@ import UIKit
 
 /// This is the default view that backs the CameraViewController.
 open class CameraView: UIView {
+    public enum PreviewRenderer: String, CaseIterable {
+        case openGL = "OpenGL"
+        case metal = "Metal"
+
+        fileprivate func makePreviewView() -> PreviewRenderingView {
+            switch self {
+            case .openGL:
+                return PreviewView()
+            case .metal:
+                return MetalPreviewView()
+            }
+        }
+    }
+
     /// default camerakit view to draw outputted textures
-    public let previewView = PreviewView()
+    public let previewView: PreviewRenderingView
 
     // MARK: View properties
 
@@ -180,9 +194,15 @@ open class CameraView: UIView {
         return view
     }()
 
-    override public init(frame: CGRect) {
+    public init(frame: CGRect, previewRenderer: PreviewRenderer) {
+        self.previewView = previewRenderer.makePreviewView()
+        print("[CameraKitSandbox] CameraView using \(previewRenderer.rawValue) preview renderer (\(type(of: previewView)))")
         super.init(frame: frame)
         setup()
+    }
+
+    override public convenience init(frame: CGRect) {
+        self.init(frame: frame, previewRenderer: .metal)
     }
 
     @available(*, unavailable)
