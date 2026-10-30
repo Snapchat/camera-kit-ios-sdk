@@ -77,6 +77,7 @@ open class CameraController: NSObject, LensRepositoryGroupObserver, LensPrefetch
 
     /// The CameraKit session
     public let cameraKit: CameraKitProtocol
+    private let preservesLensStateOnBackground: Bool
 
     /// The position of the camera.
     public private(set) var cameraPosition: AVCaptureDevice.Position = .front {
@@ -163,15 +164,23 @@ open class CameraController: NSObject, LensRepositoryGroupObserver, LensPrefetch
         let lensesConfig = LensesConfig(cacheConfig: CacheConfig(lensContentMaxSize: 150 * 1024 * 1024))
         let cameraKit = Session(sessionConfig: sessionConfig, lensesConfig: lensesConfig, errorHandler: nil)
         let captureSession = AVCaptureSession()
-        self.init(cameraKit: cameraKit, captureSession: captureSession)
+        self.init(
+            cameraKit: cameraKit, captureSession: captureSession,
+            preservesLensStateOnBackground: sessionConfig?.preservesLensStateOnBackground ?? false
+        )
     }
 
     /// Init with camera kit session, capture session, and lens holder
     /// - Parameters:
     ///   - cameraKit: camera kit session
     ///   - captureSession: avcapturesession
-    public init(cameraKit: CameraKitProtocol, captureSession: AVCaptureSession) {
+    ///   - preservesLensStateOnBackground: Must match the SessionConfig used to create cameraKit.
+    public init(
+        cameraKit: CameraKitProtocol, captureSession: AVCaptureSession,
+        preservesLensStateOnBackground: Bool = false
+    ) {
         self.cameraKit = cameraKit
+        self.preservesLensStateOnBackground = preservesLensStateOnBackground
         self.captureSession = captureSession
         super.init()
     }
@@ -781,12 +790,12 @@ extension CameraController {
         )
     }
 
-    /// Notifies the camera controller that the app is about to background. The app must stop processing until re-foregrounded.
+    /// Restores the selected Lens when the SDK uses its default background cleanup policy.
     /// - Parameter notification: the NSNotification.
     @objc
     private func appWillEnterForegroundNotification(_ notification: Notification) {
-        // SDK pauses/disables lens in background, so re-apply the lens when entering foreground
-        guard let currentLens else { return }
+        // An opted-in Session resumes its existing scene. Reapplying would discard that state.
+        guard !preservesLensStateOnBackground, let currentLens else { return }
         applyLens(currentLens)
     }
 }

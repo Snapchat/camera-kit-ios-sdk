@@ -52,7 +52,7 @@ open class CameraViewController: UIViewController, CameraControllerUIDelegate {
     }
 
     // The backing view
-    public let cameraView = CameraView()
+    public let cameraView: CameraView
 
     override open func loadView() {
         view = cameraView
@@ -81,7 +81,11 @@ open class CameraViewController: UIViewController, CameraControllerUIDelegate {
     ///   - repoGroups: List of group IDs to observe.
     ///   - sessionConfig: Config to configure session with application id and api token.
     ///   Pass this in if you wish to dynamically update or overwrite the application id and api token in the application's `Info.plist`.
-    public convenience init(repoGroups: [String], sessionConfig: SessionConfig? = nil) {
+    public convenience init(
+        repoGroups: [String],
+        sessionConfig: SessionConfig? = nil,
+        previewRenderer: CameraView.PreviewRenderer = .metal
+    ) {
         // Max size of lens content cache = 150 * 1024 * 1024 = 150MB
         // 150MB to make sure that some lenses that use large assets such as the ones required for
         // 3D body tracking (https://lensstudio.snapchat.com/templates/object/3d-body-tracking) have
@@ -89,7 +93,12 @@ open class CameraViewController: UIViewController, CameraControllerUIDelegate {
         let lensesConfig = LensesConfig(cacheConfig: CacheConfig(lensContentMaxSize: 150 * 1024 * 1024))
         let cameraKit = Session(sessionConfig: sessionConfig, lensesConfig: lensesConfig, errorHandler: nil)
         let captureSession = AVCaptureSession()
-        self.init(cameraKit: cameraKit, captureSession: captureSession, repoGroups: repoGroups)
+        self.init(
+            cameraKit: cameraKit,
+            captureSession: captureSession,
+            repoGroups: repoGroups,
+            previewRenderer: previewRenderer
+        )
     }
 
     /// Convenience init to configure a camera controller with a specified AVCaptureSession stack, CameraKit, and list of group IDs.
@@ -97,16 +106,22 @@ open class CameraViewController: UIViewController, CameraControllerUIDelegate {
     ///   - cameraKit: camera kit session
     ///   - captureSession: a backing AVCaptureSession to use
     ///   - repoGroups: the group IDs to observe
-    public convenience init(cameraKit: CameraKitProtocol, captureSession: AVCaptureSession, repoGroups: [String]) {
+    public convenience init(
+        cameraKit: CameraKitProtocol,
+        captureSession: AVCaptureSession,
+        repoGroups: [String],
+        previewRenderer: CameraView.PreviewRenderer = .metal
+    ) {
         let cameraController = CameraController(cameraKit: cameraKit, captureSession: captureSession)
         cameraController.groupIDs = repoGroups
-        self.init(cameraController: cameraController)
+        self.init(cameraController: cameraController, previewRenderer: previewRenderer)
     }
 
     /// Initialize the view controller with a preconfigured camera controller
     /// - Parameter cameraController: the camera controller to use.
-    public init(cameraController: CameraController) {
+    public init(cameraController: CameraController, previewRenderer: CameraView.PreviewRenderer = .metal) {
         self.cameraController = cameraController
+        self.cameraView = CameraView(frame: .zero, previewRenderer: previewRenderer)
         super.init(nibName: nil, bundle: nil)
     }
 
